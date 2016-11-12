@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-native-popup-menu": "^0.5.7",
+    "react-native-view-shot": "^1.5.0"
+  }
+}

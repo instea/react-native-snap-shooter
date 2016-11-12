@@ -1,0 +1,28 @@
+{
+  "name": "react-native-snap-shooter",
+  "version": "0.0.1",
+  "description": "Snap shooter for react native applications",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native",
+    "snapshots",
+    "test"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "author": "sodik82",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^1.0.0",
+    "yargs": "^6.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.10.0",
+    "eslint-plugin-node": "^3.0.3"
+  }
+}
