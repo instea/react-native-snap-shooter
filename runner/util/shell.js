@@ -56,10 +56,23 @@ function overwriteFile(file, content) {
   });
 }
 
+/**
+pipe streams and return promise then done
+*/
+function pipe(src, dest) {
+  return new Promise((resolve, reject) => {
+    dest.on('finish', () => resolve());
+    dest.on('error', (e) => reject(e));
+
+    src.pipe(dest);
+  });
+}
+
 module.exports = {
   exec,
   spawn,
   ensureDir,
   readJSON,
   overwriteFile,
+  pipe,
 };

@@ -8,6 +8,7 @@ const {
   registerDemo,
 } = require('./util/rn');
 const { ensureDir, readJSON } = require('./util/shell');
+const { startServer, receiveSnapshots } = require('./server/server');
 
 console.log("Arguments:", argv);
 
@@ -17,11 +18,18 @@ const defaultCfg = {
   project: 'sampleProject',
   demoDest : 'demo',
   demoApp : 'DemoApp.js',
+  snapTimeout: 1000,
+  serverPort: 8023,
+  outputDir: 'work/results',
 }
+
+let server = undefined;
 
 readConfig(demoDir)
 .then((demoCfg) => {
   return ensureDir(demoCfg.workDir)
+    .then(() => startServer(demoCfg))
+    .then(s => server = s)
     .then(() => initProject(demoCfg))
     .then((cfg) => {
       return copyDemo(demoDir, cfg.projectDir + '/' + cfg.demoDest)
@@ -30,10 +38,12 @@ readConfig(demoDir)
         .then(() => linkNative(cfg))
         // TODO shut down any packager if it is running
         .then(() => runIOS(cfg))
+        .then(() => receiveSnapshots(server))
     });
 })
 .then(res => console.log("Done", res))
 .catch(err => console.error(err))
+// TODO properly close server
 
 function readConfig(dir) {
   return readJSON(dir + '/shooter.json')

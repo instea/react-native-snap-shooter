@@ -18,6 +18,7 @@
   "author": "sodik82",
   "license": "ISC",
   "dependencies": {
+    "formidable": "^1.0.17",
     "fs-extra": "^1.0.0",
     "yargs": "^6.3.0"
   },

@@ -27,6 +27,9 @@ Install dependencies for demo project
 */
 function installDependencies(cfg) {
   const deps = cfg.dependencies;
+  // add our dependencies
+  // TODO use proper version once published to NPM
+  deps['react-native-snap-shooter-tools'] = '../../../tools';
   let args = '';
   for(let d in deps) {
     const version = deps[d];
@@ -40,10 +43,32 @@ Register `demoApp` to generated project
 */
 function registerDemo(cfg) {
   const demoJs = `
-import { AppRegistry } from 'react-native';
-import Demo from './${cfg.demoDest}/${cfg.demoApp}';
+import React, { Component } from 'react';
+import { AppRegistry, View } from 'react-native';
 
-AppRegistry.registerComponent('${cfg.project}', () => Demo);
+import tools from 'react-native-snap-shooter-tools';
+import DemoApp from './${cfg.demoDest}/${cfg.demoApp}';
+
+class Shotter extends Component {
+  render() {
+    return (
+      <View ref="root" style={{flex:1,backgroundColor: 'yellow'}}>
+        <DemoApp/>
+      </View>
+    )
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.snap(), ${cfg.snapTimeout});
+  }
+
+  snap() {
+    tools.snapshot(this.refs.root).catch(err => console.warn(err));
+  }
+}
+
+tools.init({ serverPort : ${cfg.serverPort}});
+AppRegistry.registerComponent('${cfg.project}', () => Shotter);
   `;
   return overwriteFile(cfg.projectDir + '/index.ios.js', demoJs);
 }

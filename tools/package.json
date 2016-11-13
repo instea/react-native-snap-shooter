@@ -1,0 +1,22 @@
+{
+  "name": "react-native-snap-shooter-tools",
+  "version": "0.0.1",
+  "description": "Tools for taking snap shots of RN apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native",
+    "snapshots"
+  ],
+  "author": "sodik82",
+  "license": "ISC",
+  "dependencies": {
+    "react-native-view-shot": "^1.5.0",
+    "superagent": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.30.0"
+  }
+}
