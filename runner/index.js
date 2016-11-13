@@ -24,6 +24,8 @@ const defaultCfg = {
   snapTimeout: 1000,
   serverPort: 8023,
   outputDir: 'work/results',
+  // TODO make it array
+  rnVersion: '0.34.0',
 }
 
 let server = undefined;

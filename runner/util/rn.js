@@ -9,7 +9,7 @@ function initProject(cfg) {
   // TODO make sure directory is not there (leave for now to speed up development)
   const name = cfg.project;
   console.log("Initialization of project - it might take several minutes to finish");
-  return spawn('react-native init ' + name, {
+  return spawn(`react-native init ${name} --version ${cfg.rnVersion}`, {
     cwd : cfg.workDir,
   }).then(() => Object.assign({}, cfg, {projectDir: cfg.workDir + '/' + name}));
 }

@@ -35,8 +35,7 @@ function receiveSnapshots(server) {
 function handleSnapshot(request, response, server, cfg) {
   // const queryData = url.parse(request.url, true).query;
   // const name = queryData.name;
-  // TODO properly build directory
-  const dir = cfg.outputDir + '/xxx';
+  const dir = cfg.outputDir + '/' + cfg.project + '/' + cfg.rnVersion;
   return ensureDir(dir)
     .then(() => {
       var form = new formidable.IncomingForm();
