@@ -7,8 +7,6 @@ const DEF_OPTIONS = {
 let options = DEF_OPTIONS;
 let idx = 0;
 
-// TODO remove superagent dep?
-
 /**
 Takes snapshot and optionally send it to server
 */
@@ -39,12 +37,11 @@ function sendFile(name, uri) {
 
   const xhr = new XMLHttpRequest();
   xhr.open('POST', serverURL);
-  xhr.send(body);
   return new Promise((resolve, reject) => {
     xhr.onerror = (e) => reject(e);
     xhr.onload = () => resolve(xhr.status);
 
-    xhr.send(formdata);
+    xhr.send(body);
   });
 }
 

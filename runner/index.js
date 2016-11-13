@@ -1,3 +1,5 @@
+/* eslint-disable no-process-exit */
+
 const argv = require('yargs').argv;
 const {
   initProject,
@@ -6,6 +8,7 @@ const {
   linkNative,
   runIOS,
   registerDemo,
+  killPackager,
 } = require('./util/rn');
 const { ensureDir, readJSON } = require('./util/shell');
 const { startServer, receiveSnapshots } = require('./server/server');
@@ -36,7 +39,7 @@ readConfig(demoDir)
         .then(() => registerDemo(cfg))
         .then(() => installDependencies(cfg))
         .then(() => linkNative(cfg))
-        // TODO shut down any packager if it is running
+        .then(() => killPackager(cfg))
         .then(() => runIOS(cfg))
         .then(() => receiveSnapshots(server))
     });
@@ -44,6 +47,7 @@ readConfig(demoDir)
 .then(res => console.log("Done", res))
 .catch(err => console.error(err))
 // TODO properly close server
+.then(() => process.exit())
 
 function readConfig(dir) {
   return readJSON(dir + '/shooter.json')

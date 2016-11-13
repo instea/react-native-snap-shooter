@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const { spawn, overwriteFile } = require('./shell');
+const { spawn, overwriteFile, exec } = require('./shell');
 
 /**
 Initiate new RN project
@@ -8,6 +8,7 @@ Initiate new RN project
 function initProject(cfg) {
   // TODO make sure directory is not there (leave for now to speed up development)
   const name = cfg.project;
+  console.log("Initialization of project - it might take several minutes to finish");
   return spawn('react-native init ' + name, {
     cwd : cfg.workDir,
   }).then(() => Object.assign({}, cfg, {projectDir: cfg.workDir + '/' + name}));
@@ -30,6 +31,7 @@ function installDependencies(cfg) {
   // add our dependencies
   // TODO use proper version once published to NPM
   deps['react-native-snap-shooter-tools'] = '../../../tools';
+  deps['react-native-view-shot'] = '^1.5.0';
   let args = '';
   for(let d in deps) {
     const version = deps[d];
@@ -81,6 +83,10 @@ function runIOS(cfg){
   return spawn('react-native run-ios', { cwd : cfg.projectDir });
 }
 
+function killPackager() {
+  return exec("lsof -n -i4TCP:8081 | sed '1 d' | awk '{print $2}' | xargs kill -9");
+}
+
 module.exports = {
   initProject,
   copyDemo,
@@ -88,4 +94,5 @@ module.exports = {
   linkNative,
   runIOS,
   registerDemo,
+  killPackager,
 };
