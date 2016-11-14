@@ -12,7 +12,7 @@ function startServer(cfg) {
 
     function handleRequest(request, response){
       console.log("incomming request");
-      handleSnapshot(request, response, server, cfg);
+      handleSnapshot(request, response, server);
     }
 
     server.listen(port, function(){
@@ -32,9 +32,10 @@ function receiveSnapshots(server) {
   });
 }
 
-function handleSnapshot(request, response, server, cfg) {
+function handleSnapshot(request, response, server) {
   // const queryData = url.parse(request.url, true).query;
   // const name = queryData.name;
+  const cfg = server.currentProject;
   const dir = cfg.outputDir + '/' + cfg.project + '/' + cfg.rnVersion;
   return ensureDir(dir)
     .then(() => {

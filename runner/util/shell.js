@@ -56,6 +56,13 @@ function overwriteFile(file, content) {
   });
 }
 
+function deleteDir(dir) {
+  console.log("Deleting dir", dir);
+  return new Promise((resolve, reject) => {
+    fs.remove(dir, (err) => err ? reject(err) : resolve());
+  });
+}
+
 /**
 pipe streams and return promise then done
 */
@@ -75,4 +82,5 @@ module.exports = {
   readJSON,
   overwriteFile,
   pipe,
+  deleteDir,
 };

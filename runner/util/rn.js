@@ -1,17 +1,17 @@
 const fs = require('fs-extra');
-const { spawn, overwriteFile, exec } = require('./shell');
+const { spawn, overwriteFile, exec, deleteDir } = require('./shell');
 
 /**
 Initiate new RN project
 @return Promise resolved to configuration with projectDir filled in
 */
 function initProject(cfg) {
-  // TODO make sure directory is not there (leave for now to speed up development)
   const name = cfg.project;
   console.log("Initialization of project - it might take several minutes to finish");
-  return spawn(`react-native init ${name} --version ${cfg.rnVersion}`, {
-    cwd : cfg.workDir,
-  }).then(() => Object.assign({}, cfg, {projectDir: cfg.workDir + '/' + name}));
+  return deleteDir(cfg.workDir + '/' + name)
+    .then(() => spawn(`react-native init ${name} --version ${cfg.rnVersion}`, {
+      cwd : cfg.workDir,
+    })).then(() => Object.assign({}, cfg, {projectDir: cfg.workDir + '/' + name}));
 }
 
 function copyDemo(demoDir, projectDir) {

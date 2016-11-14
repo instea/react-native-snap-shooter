@@ -24,8 +24,7 @@ const defaultCfg = {
   snapTimeout: 1000,
   serverPort: 8023,
   outputDir: 'work/results',
-  // TODO make it array
-  rnVersion: '0.34.0',
+  rnVersions: ['0.34.0', '0.35.0'],
 }
 
 let server = undefined;
@@ -35,21 +34,43 @@ readConfig(demoDir)
   return ensureDir(demoCfg.workDir)
     .then(() => startServer(demoCfg))
     .then(s => server = s)
-    .then(() => initProject(demoCfg))
+    .then(() => makeAllVersions(demoCfg))
+})
+.then(res => console.log("Done", res))
+.catch(err => console.error(err))
+// TODO properly close server
+.then(() => process.exit())
+
+function makeAllVersions(cfg) {
+  function makeByIdx(i) {
+    if (i >= cfg.rnVersions.length) {
+      return Promise.resolve();
+    }
+    return makeProjectVersion(cfg, cfg.rnVersions[i])
+      .then(() => makeByIdx(i+1));
+  }
+  if (cfg.rnVersions) {
+    // run them in sequence
+    return makeByIdx(0);
+  }
+  throw new Error("no RN versions to process");
+}
+
+function makeProjectVersion(baseCfg, rnVersion) {
+  console.log("Going to make project with RN@", rnVersion);
+  const projectCfg = Object.assign({}, baseCfg, { rnVersion })
+  return initProject(projectCfg)
     .then((cfg) => {
       return copyDemo(demoDir, cfg.projectDir + '/' + cfg.demoDest)
         .then(() => registerDemo(cfg))
+        .then(() => server.currentProject = cfg)
         .then(() => installDependencies(cfg))
         .then(() => linkNative(cfg))
         .then(() => killPackager(cfg))
         .then(() => runIOS(cfg))
         .then(() => receiveSnapshots(server))
     });
-})
-.then(res => console.log("Done", res))
-.catch(err => console.error(err))
-// TODO properly close server
-.then(() => process.exit())
+}
 
 function readConfig(dir) {
   return readJSON(dir + '/shooter.json')
