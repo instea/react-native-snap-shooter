@@ -49,6 +49,7 @@ function handleSnapshot(request, response, server) {
         const fileName = dir + '/' + file.name;
         // TODO future make it async
         fs.renameSync(file.path, fileName);
+        console.log("received snap", fileName);
         server.emit('snapfile', { fileName });
         response.end('It Works!! Path Hit: ' + request.url);
       });
