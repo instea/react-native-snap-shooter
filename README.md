@@ -7,15 +7,18 @@ Currently it is in very early development stage and we want to validate if commu
 ## Prerequisites
 It requires all tools needed to develop and run RN applications especially following
 * "shell" ( MacOS, ...)
+* Node.js 6
 * global `react-native-cli` at least version `0.2`
 
 ## TODO
 Plan for future roughly based on priority (any help is welcomed). The code will also need more proper error handling/timeouts that hopefully will improve over time.
 
 - [x] basic IOS prototype for taking snapshots/screenshots
-- [ ] compare image
+- [x] compare image
 - [ ] wildcard RN versions
 - [ ] Android support
-- [ ] ability to set target device (sim)
+- [ ] ability to set target simulator
 - [ ] "diff runs" ( will check only new RN versions etc)
+- [ ] more suitable output format
+- [ ] ability to take more snapshots
 - [ ] more flexible configuration options

@@ -6,16 +6,20 @@ const { ensureDir } = require('./util/shell');
 const { readConfig } = require('./util/config');
 const { startServer } = require('./server/server');
 const { makeAllVersions } = require('./shooter');
+const { checkImages } = require('./checker');
 
 console.log("Arguments:", argv);
 
-const demoDir = 'demo';
-
+const demoDir = argv.src || 'demo';
+const shouldCheck = argv.check;
 
 let server = undefined;
 
 readConfig(demoDir)
 .then((demoCfg) => {
+  if (shouldCheck) {
+    return checkImages(demoCfg);
+  }
   return ensureDir(demoCfg.workDir)
     .then(() => startServer(demoCfg))
     .then(s => server = s)
