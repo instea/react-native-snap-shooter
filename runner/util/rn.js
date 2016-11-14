@@ -29,8 +29,8 @@ Install dependencies for demo project
 function installDependencies(cfg) {
   const deps = cfg.dependencies;
   // add our dependencies
-  // TODO use proper version once published to NPM
-  deps['react-native-snap-shooter-tools'] = '../../../tools';
+  deps['react-native-snap-shooter-tools'] = '0.1.x';
+  // deps['react-native-snap-shooter-tools'] = '../../../tools';
   deps['react-native-view-shot'] = '^1.5.0';
   let args = '';
   for(let d in deps) {

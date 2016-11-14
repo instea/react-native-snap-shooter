@@ -1,6 +1,6 @@
 {
   "name": "react-native-snap-shooter",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Snap shooter for react native applications",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "node": ">=6.0.0"
   },
   "author": "sodik82",
+  "homepage": "https://github.com/instea/react-native-snap-shooter",
   "license": "ISC",
   "dependencies": {
     "formidable": "^1.0.17",

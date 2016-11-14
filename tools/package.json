@@ -1,6 +1,6 @@
 {
   "name": "react-native-snap-shooter-tools",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Tools for taking snap shots of RN apps",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "snapshots"
   ],
   "author": "sodik82",
+  "homepage": "https://github.com/instea/react-native-snap-shooter",
   "license": "ISC",
   "peerDependencies": {
     "react-native-view-shot": "^1.5.0"

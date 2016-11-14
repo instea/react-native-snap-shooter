@@ -26,7 +26,7 @@ function snapshot(view, name) {
 
 function sendFile(name, uri) {
   console.log("sending file", name, uri);
-  const serverURL = `http://localhost:${options.serverPort}/snap?name=ahoj`;
+  const serverURL = `http://localhost:${options.serverPort}/snap`;
   const photo = {
     uri,
     type: 'image/png',
