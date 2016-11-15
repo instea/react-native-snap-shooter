@@ -1,8 +1,11 @@
 {
   "name": "react-native-snap-shooter",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Snap shooter for react native applications",
   "main": "index.js",
+  "bin" : {
+    "snap-shooter" : "index.js"
+  },
   "scripts": {
     "start": "node index.js",
     "check": "node index.js --check",

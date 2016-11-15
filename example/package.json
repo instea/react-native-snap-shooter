@@ -1,0 +1,15 @@
+{
+  "name": "react-native-snap-shooter-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Example project how to use snap shooter",
+  "scripts": {
+    "start": "snap-shooter",
+    "test": "snap-shooter --check"
+  },
+  "author": "sodik82",
+  "license": "ISC",
+  "dependencies": {
+    "react-native-snap-shooter": "../runner/"
+  }
+}
