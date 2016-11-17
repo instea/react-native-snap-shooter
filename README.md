@@ -24,7 +24,6 @@ Since it is lot of effort to test your library in all version we made this tool 
 }
 ```
 and run `npm install` in it.
-
 2. Create simple definition file `demo/shooter.json` like
 ```
 {
@@ -35,14 +34,13 @@ and run `npm install` in it.
 }
 ```
 where you define dependency for your library and RN versions you want to test.
-
 3. Create simple RN component that use your library in file `demo/DemoApp.js`. This is the starting point that will be imported into testing RN project (together with other files you put into `demo` directory) and will be snap shot.
 
-Check [example](example/) for working demo.  
+Then execute `npm start` to get snap shots and `npm test` to compare them. Check [example](example/) for working demo.
 
 ## Current status
 Currently it is in an early development stage and we want to validate if community is interested in such project.
-It generally works in good case but still needs improvements to handle various edge cases.
+It generally works in good case (IOS only) but still needs improvements to handle various edge cases.
 
 ## Prerequisites and limitations
 It requires all tools needed to develop and run RN applications especially following
