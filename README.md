@@ -9,31 +9,33 @@ Since it is lot of effort to test your library in all version we made this tool 
 
 ## Getting started
 1. Setup simple testing project with `package.json` like
-```
-{
-  "name": "your-snap-test",
-  "private": true,
-  "version": "0.1.0",
-  "scripts": {
-    "start": "snap-shooter",
-    "test": "snap-shooter --check"
-  },
-  "dependencies": {
-    "react-native-snap-shooter": "*"
+  ```
+  {
+    "name": "your-snap-test",
+    "private": true,
+    "version": "0.1.0",
+    "scripts": {
+      "start": "snap-shooter",
+      "test": "snap-shooter --check"
+    },
+    "dependencies": {
+      "react-native-snap-shooter": "*"
+    }
   }
-}
-```
-and run `npm install` in it.
+  ```
+  and run `npm install` in it.
+
 2. Create simple definition file `demo/shooter.json` like
-```
-{
-  "dependencies": {
-    "your-lib": "1.0.0"
-  },
-  "rnVersions" : ["0.34.1", "0.35.0", "0.36.1"]
-}
-```
-where you define dependency for your library and RN versions you want to test.
+  ```
+  {
+    "dependencies": {
+      "your-lib": "1.0.0"
+    },
+    "rnVersions" : ["0.34.1", "0.35.0", "0.36.1"]
+  }
+  ```
+  where you define dependency for your library and RN versions you want to test.
+
 3. Create simple RN component that use your library in file `demo/DemoApp.js`. This is the starting point that will be imported into testing RN project (together with other files you put into `demo` directory) and will be snap shot.
 
 Then execute `npm start` to get snap shots and `npm test` to compare them. Check [example](example/) for working demo.
