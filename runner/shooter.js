@@ -34,7 +34,7 @@ function makeProjectVersion(baseCfg, rnVersion, server) {
         .then(() => server.currentProject = cfg)
         .then(() => installDependencies(cfg))
         .then(() => linkNative(cfg))
-        .then(() => killPackager(cfg))
+        .then(() => killPackager(cfg))  // TODO start it nicely as our process so it can be cleaned
         .then(() => runIOS(cfg))
         .then(() => receiveSnapshots(server))
     });

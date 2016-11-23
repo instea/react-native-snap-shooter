@@ -21,15 +21,20 @@ function spawn(cmd, options) {
   return new Promise((resolve, reject) => {
     console.log('spawning', cmd, options);
     const child = node_spawn(cmd, options);
+    let output = '';
 
     child.on('error', (err) => {
       console.log('Failed to start child process.');
       reject(err);
     });
 
+    if (child.stdout) {
+      child.stdout.on('data', data => output += data);
+    }
+
     child.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
-      resolve(code);
+      resolve({ code, output });
     });
   })
 }

@@ -12,7 +12,10 @@ const { checkImages } = require('./checker');
 console.log("Arguments:", argv);
 
 const demoDir = argv.src || 'demo';
+// check images for changes
 const shouldCheck = argv.check;
+// just print config
+const shouldPrint = argv.print;
 
 let server = undefined;
 
@@ -20,6 +23,9 @@ readConfig(demoDir)
 .then((demoCfg) => {
   if (shouldCheck) {
     return checkImages(demoCfg);
+  }
+  if (shouldPrint) {
+    return demoCfg;
   }
   return ensureDir(demoCfg.workDir)
     .then(() => startServer(demoCfg))

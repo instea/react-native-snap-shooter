@@ -41,6 +41,14 @@ function installDependencies(cfg) {
 }
 
 /**
+Return (as promise) list of all RN versions
+*/
+function listRNVersions() {
+  return spawn('npm view react-native versions --json', { stdio: 'pipe'}).
+    then(({ output }) => JSON.parse(output));
+}
+
+/**
 Register `demoApp` to generated project
 */
 function registerDemo(cfg) {
@@ -95,4 +103,5 @@ module.exports = {
   runIOS,
   registerDemo,
   killPackager,
+  listRNVersions,
 };

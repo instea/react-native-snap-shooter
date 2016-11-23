@@ -32,7 +32,7 @@ function compareImages(cfg, files) {
     }
     console.log("Comparing with ", files[idx]);
     return Jimp.read(files[idx]).then(img => compare(original, img))
-      .then(compareByIdx(original, idx + 1));
+      .then(() => compareByIdx(original, idx + 1));
   }
   console.log("Loading first image as original", files[0]);
   return Jimp.read(files[0])

@@ -59,7 +59,7 @@ Plan for future roughly based on priority (any help is welcomed). The code will 
 
 - [x] basic IOS prototype for taking snapshots/screenshots
 - [x] compare images
-- [ ] wildcard RN versions
+- [x] wildcard RN versions
 - [ ] "diff runs" ( will check only new RN versions etc)
 - [ ] Android support
 - [ ] ability to set target simulator
