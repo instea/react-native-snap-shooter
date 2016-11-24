@@ -92,7 +92,7 @@ function runIOS(cfg){
 }
 
 function killPackager() {
-  return exec("lsof -n -i4TCP:8081 | sed '1 d' | awk '{print $2}' | xargs kill -9");
+  return exec("lsof -n -i4TCP:8081 | sed '1 d' | awk '{print $2}' | xargs kill -9 || echo done");
 }
 
 module.exports = {

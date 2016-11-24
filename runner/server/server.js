@@ -24,11 +24,17 @@ function startServer(cfg) {
   })
 }
 
-function receiveSnapshots(server) {
+function receiveSnapshots(server, cfg) {
   console.log("receiveSnapshots...");
-  // TODO reject on timeout
-  return new Promise((resolve) => {
+  return timeoutPromise(new Promise((resolve) => {
     server.on('snapfile', snap => resolve(snap));
+  }), cfg.receiveTimeout);
+}
+
+function timeoutPromise(p, ms) {
+  return new Promise((resolve, reject) => {
+    const checker = setTimeout(() => reject("operation timeouted"), ms);
+    p.then(resolve).catch(reject).then(() => clearTimeout(checker));
   });
 }
 

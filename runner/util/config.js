@@ -11,6 +11,7 @@ const defaultCfg = {
   snapTimeout: 1000,
   serverPort: 8023,
   outputDir: "work/results",
+  receiveTimeout: 100000,
   rnVersions: ["0.34.0", "0.35.0"],
 }
 

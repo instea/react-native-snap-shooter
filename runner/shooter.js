@@ -36,7 +36,7 @@ function makeProjectVersion(baseCfg, rnVersion, server) {
         .then(() => linkNative(cfg))
         .then(() => killPackager(cfg))  // TODO start it nicely as our process so it can be cleaned
         .then(() => runIOS(cfg))
-        .then(() => receiveSnapshots(server))
+        .then(() => receiveSnapshots(server, cfg))
     });
 }
 
