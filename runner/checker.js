@@ -1,5 +1,7 @@
 const Jimp = require("jimp");
 
+const { enumerateRuns, joinPath, getDirForRun } = require('./util/fs');
+
 function checkImages(cfg) {
   return listImagesByVersion(cfg)
     .then((files) => compareImages(cfg, files));
@@ -9,8 +11,8 @@ function checkImages(cfg) {
 list images by RN version
 */
 function listImagesByVersion(cfg) {
-  const base = cfg.outputDir + '/' + cfg.project;
-  const files = cfg.rnVersions.map(version => base + '/' + version + '/snap-0.png');
+  const runs = enumerateRuns(cfg);
+  const files = runs.map(run => joinPath(getDirForRun(cfg, run), 'snap-0.png'));
   // TODO check if all files exists
   if (files.length < 2) {
     throw new Error('need at least two images to check');

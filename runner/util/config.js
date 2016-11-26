@@ -13,6 +13,7 @@ const defaultCfg = {
   outputDir: "work/results",
   receiveTimeout: 100000,
   rnVersions: ["0.34.0", "0.35.0"],
+  diffRun: true, // if execute only diff runs (otherwise rewrites old execution)
 }
 
 function readConfig(dir) {

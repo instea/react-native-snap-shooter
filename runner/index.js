@@ -6,7 +6,7 @@ const argv = require('yargs').argv;
 const { ensureDir } = require('./util/shell');
 const { readConfig } = require('./util/config');
 const { startServer } = require('./server/server');
-const { makeAllVersions } = require('./shooter');
+const { makeAllRuns } = require('./shooter');
 const { checkImages } = require('./checker');
 
 console.log("Arguments:", argv);
@@ -30,7 +30,7 @@ readConfig(demoDir)
   return ensureDir(demoCfg.workDir)
     .then(() => startServer(demoCfg))
     .then(s => server = s)
-    .then(() => makeAllVersions(demoCfg, server))
+    .then(() => makeAllRuns(demoCfg, server))
 })
 .then(res => console.log("Done", res))
 .catch(err => console.error(err))

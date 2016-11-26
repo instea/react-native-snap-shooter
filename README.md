@@ -55,14 +55,14 @@ We use [react-native-view-shot](https://github.com/gre/react-native-view-shot) a
 For image comparison we use [jimp](https://github.com/oliver-moran/jimp) that allows us to find image distance so that allows you to find how bad the changes are.
 
 ## TODO
-Plan for future roughly based on priority (any help is welcomed). The code will also need more proper error handling/timeouts that hopefully will improve over time.
+Plan for future roughly based on priority (any help is welcomed). The code will also need more proper error handling that hopefully will improve over time.
 
 - [x] basic IOS prototype for taking snapshots/screenshots
 - [x] compare images
 - [x] wildcard RN versions
-- [ ] "diff runs" ( will check only new RN versions etc)
+- [x] "diff runs" ( will check only new RN versions etc)
 - [ ] Android support
-- [ ] ability to set target simulator
+- [ ] ability to set target simulator(s)
 - [ ] more suitable output format
 - [ ] ability to take more snapshots
 - [ ] more flexible configuration options

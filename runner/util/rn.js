@@ -1,17 +1,18 @@
 const fs = require('fs-extra');
 const { spawn, overwriteFile, exec, deleteDir } = require('./shell');
+const { getProjectDir } = require('../util/fs');
 
 /**
 Initiate new RN project
-@return Promise resolved to configuration with projectDir filled in
 */
 function initProject(cfg) {
   const name = cfg.project;
   console.log("Initialization of project - it might take several minutes to finish");
-  return deleteDir(cfg.workDir + '/' + name)
-    .then(() => spawn(`react-native init ${name} --version ${cfg.rnVersion}`, {
+  const projectDir = getProjectDir(cfg);
+  return deleteDir(projectDir)
+    .then(() => spawn(`react-native init ${name} --version ${cfg.run.rnVersion}`, {
       cwd : cfg.workDir,
-    })).then(() => Object.assign({}, cfg, {projectDir: cfg.workDir + '/' + name}));
+    }));
 }
 
 function copyDemo(demoDir, projectDir) {
@@ -37,7 +38,7 @@ function installDependencies(cfg) {
     const version = deps[d];
     args += `${d}@${version} `;
   }
-  return spawn('npm install --save ' + args, { cwd : cfg.projectDir });
+  return spawn('npm install --save ' + args, { cwd : getProjectDir(cfg) });
 }
 
 /**
@@ -80,15 +81,15 @@ class Shotter extends Component {
 tools.init({ serverPort : ${cfg.serverPort}});
 AppRegistry.registerComponent('${cfg.project}', () => Shotter);
   `;
-  return overwriteFile(cfg.projectDir + '/index.ios.js', demoJs);
+  return overwriteFile(getProjectDir(cfg) + '/index.ios.js', demoJs);
 }
 
 function linkNative(cfg){
-  return spawn('react-native link', { cwd : cfg.projectDir });
+  return spawn('react-native link', { cwd : getProjectDir(cfg) });
 }
 
 function runIOS(cfg){
-  return spawn('react-native run-ios', { cwd : cfg.projectDir });
+  return spawn('react-native run-ios', { cwd : getProjectDir(cfg) });
 }
 
 function killPackager() {

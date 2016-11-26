@@ -4,6 +4,7 @@ const formidable = require('formidable');
 const fs = require('fs-extra');
 
 const { ensureDir } = require('../util/shell');
+const { getDirForRun, joinPath } = require('../util/fs');
 
 function startServer(cfg) {
   const port = cfg.serverPort;
@@ -39,10 +40,8 @@ function timeoutPromise(p, ms) {
 }
 
 function handleSnapshot(request, response, server) {
-  // const queryData = url.parse(request.url, true).query;
-  // const name = queryData.name;
   const cfg = server.currentProject;
-  const dir = cfg.outputDir + '/' + cfg.project + '/' + cfg.rnVersion;
+  const dir = getDirForRun(cfg, cfg.run);
   return ensureDir(dir)
     .then(() => {
       var form = new formidable.IncomingForm();
@@ -52,8 +51,7 @@ function handleSnapshot(request, response, server) {
           return;
         }
         const file = files.photo;
-        const fileName = dir + '/' + file.name;
-        // TODO future make it async
+        const fileName = joinPath(dir, file.name);
         fs.renameSync(file.path, fileName);
         console.log("received snap", fileName);
         server.emit('snapfile', { fileName });
