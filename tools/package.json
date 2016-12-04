@@ -1,6 +1,6 @@
 {
   "name": "react-native-snap-shooter-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tools for taking snap shots of RN apps",
   "main": "index.js",
   "scripts": {

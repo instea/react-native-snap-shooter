@@ -13,7 +13,7 @@ Takes snapshot and optionally send it to server
 function snapshot(view, name) {
   name = name || generateName();
   console.log("taking snapshot", name);
-  return takeSnapshot(view)
+  return takeSnapshot(view, {})
     .then(uri => {
       console.log("taken", uri);
       if (options.serverPort) {
