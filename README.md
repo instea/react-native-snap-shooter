@@ -66,3 +66,7 @@ Plan for future roughly based on priority (any help is welcomed). The code will 
 - [ ] more suitable output format
 - [ ] ability to take more snapshots
 - [ ] more flexible configuration options
+
+## Troubleshooting
+### Android does not receive snapshots
+When you see `adb server version (%d) doesn't match this client (%d)` in console output it means that you have to make sure that your simulator is using same version as `react-native` (most likely `$ANDROID_HOME/platform-tools/adb`)

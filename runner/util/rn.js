@@ -112,9 +112,13 @@ function killPackager() {
 
 /* starts packager and return (promised) child */
 function startPackager(cfg){
-  return spawn('npm start', { cwd : getProjectDir(cfg), background: true });
+  return spawn('npm start', { cwd : getProjectDir(cfg), background: true })
+    .then(() => sleep(5000));  // TODO better wait until is started
 }
 
+function sleep(timeout) {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 module.exports = {
   initProject,

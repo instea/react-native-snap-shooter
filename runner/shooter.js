@@ -55,7 +55,9 @@ function makeProjectVersion(baseCfg, run, server) {
     .then(() => killPackager(cfg))
     .then(() => startPackager(cfg))
     .then(() => (cfg.android ? runAndroid(cfg) : runIOS(cfg)))
-    .then(() => receiveSnapshots(server, cfg));
+    .then(() => receiveSnapshots(server, cfg))
+    // clean up
+    .then(() => killPackager(cfg))
 }
 
 module.exports = {
