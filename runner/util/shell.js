@@ -28,6 +28,11 @@ function spawn(cmd, options) {
       reject(err);
     });
 
+    if (options.background) {
+      console.log('Starting process in background');
+      return resolve(child);
+    }
+
     if (child.stdout) {
       child.stdout.on('data', data => output += data);
     }

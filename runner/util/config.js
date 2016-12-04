@@ -14,6 +14,7 @@ const defaultCfg = {
   receiveTimeout: 100000,
   rnVersions: ["0.34.0", "0.35.0"],
   diffRun: true, // if execute only diff runs (otherwise rewrites old execution)
+  android: true, // TODO replace with platforms
 }
 
 function readConfig(dir) {

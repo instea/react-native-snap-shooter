@@ -30,7 +30,7 @@ Install dependencies for demo project
 function installDependencies(cfg) {
   const deps = cfg.dependencies;
   // add our dependencies
-  deps['react-native-snap-shooter-tools'] = '0.1.x';
+  deps['react-native-snap-shooter-tools'] = '^0.1.1';
   // deps['react-native-snap-shooter-tools'] = '../../../tools';
   deps['react-native-view-shot'] = '^1.5.0';
   let args = '';
@@ -81,7 +81,8 @@ class Shotter extends Component {
 tools.init({ serverPort : ${cfg.serverPort}});
 AppRegistry.registerComponent('${cfg.project}', () => Shotter);
   `;
-  return overwriteFile(getProjectDir(cfg) + '/index.ios.js', demoJs);
+  return overwriteFile(getProjectDir(cfg) + '/index.ios.js', demoJs)
+    .then(() => overwriteFile(getProjectDir(cfg) + '/index.android.js', demoJs));
 }
 
 function linkNative(cfg){
@@ -92,9 +93,28 @@ function runIOS(cfg){
   return spawn('react-native run-ios', { cwd : getProjectDir(cfg) });
 }
 
-function killPackager() {
-  return exec("lsof -n -i4TCP:8081 | sed '1 d' | awk '{print $2}' | xargs kill -9 || echo done");
+function runAndroid(cfg){
+  const port = cfg.serverPort;
+  const adb = getAdbPath();
+  return spawn(`${adb} reverse tcp:${port} tcp:${port}`, { cwd : getProjectDir(cfg) })
+    .then(() => spawn('react-native run-android', { cwd : getProjectDir(cfg) }));
 }
+
+function getAdbPath() {
+  return process.env.ANDROID_HOME
+    ? process.env.ANDROID_HOME + '/platform-tools/adb'
+    : 'adb';
+}
+
+function killPackager() {
+  return exec("lsof -n -i4TCP:8081 | grep node | sed '1 d' | awk '{print $2}' | xargs kill -9 || echo done");
+}
+
+/* starts packager and return (promised) child */
+function startPackager(cfg){
+  return spawn('npm start', { cwd : getProjectDir(cfg), background: true });
+}
+
 
 module.exports = {
   initProject,
@@ -102,7 +122,9 @@ module.exports = {
   installDependencies,
   linkNative,
   runIOS,
+  runAndroid,
   registerDemo,
+  startPackager,
   killPackager,
   listRNVersions,
 };
