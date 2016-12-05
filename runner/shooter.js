@@ -10,14 +10,17 @@ const {
   registerDemo,
   killPackager,
   startPackager,
+  stopPackager,
 } = require('./util/rn');
 const { receiveSnapshots } = require('./server/server');
+const { sequence } = require('./util/promises');
 const {
   listExistingRuns,
   enumerateRuns,
   getProjectDir,
   joinPath,
   runStr,
+  isAndroidRun,
 } = require('./util/fs');
 
 function makeAllRuns(cfg, server) {
@@ -27,37 +30,50 @@ function makeAllRuns(cfg, server) {
     console.log("existing runs", existingRuns);
     runs = _.differenceBy(runs, existingRuns, runStr);
   }
+  // array of arrays where all nested arrays have same rnVersion
+  const groupedRuns = _.map(_.groupBy(runs, r => r.rnVersion));
   function makeByIdx(i) {
-    if (i >= runs.length) {
+    if (i >= groupedRuns.length) {
       return Promise.resolve();
     }
-    return makeProjectVersion(cfg, runs[i], server)
+    return makeProjectVersion(cfg, groupedRuns[i], server)
       .then(() => makeByIdx(i+1));
   }
-  if (runs.length === 0) {
+  if (groupedRuns.length === 0) {
     throw new Error("Nothing to run");
   }
   // run them in sequence
   return makeByIdx(0);
 }
 
-function makeProjectVersion(baseCfg, run, server) {
-  const { rnVersion } = run;
-  // TODO handle different devices later on (i.e. split runs for same RN etc.)
+/**
+Make project and executes runs
+@param runs array of runs to execute which all share same project specific settings (i.e. rnVersion)
+*/
+function makeProjectVersion(baseCfg, runs, server) {
+  const { rnVersion } = runs[0];
   console.log("Going to make project with RN@", rnVersion);
-  const cfg = Object.assign({}, baseCfg, { run })
+  const cfg = Object.assign({}, baseCfg, { run : { rnVersion }});
   return initProject(cfg)
     .then(() => copyDemo(cfg.demoSrc, joinPath(getProjectDir(cfg), cfg.demoDest)))
     .then(() => registerDemo(cfg))
-    .then(() => server.currentProject = cfg)
     .then(() => installDependencies(cfg))
     .then(() => linkNative(cfg))
     .then(() => killPackager(cfg))
     .then(() => startPackager(cfg))
-    .then(() => (cfg.android ? runAndroid(cfg) : runIOS(cfg)))
-    .then(() => receiveSnapshots(server, cfg))
-    // clean up
-    .then(() => killPackager(cfg))
+    .then(packager => {
+      return sequence(runs, run => executeRun(baseCfg, run, server))
+        .then(() => stopPackager(packager));
+    })
+}
+
+function executeRun(baseCfg, run, server) {
+  console.log("Going to execute run", run);
+  const cfg = Object.assign({}, baseCfg, { run });
+  server.currentProject = cfg;
+  const runner = isAndroidRun(run) ? runAndroid : runIOS;
+  return runner(cfg)
+    .then(() => receiveSnapshots(server, cfg));
 }
 
 module.exports = {

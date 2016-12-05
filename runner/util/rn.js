@@ -113,7 +113,15 @@ function killPackager() {
 /* starts packager and return (promised) child */
 function startPackager(cfg){
   return spawn('npm start', { cwd : getProjectDir(cfg), background: true })
-    .then(() => sleep(5000));  // TODO better wait until is started
+    .then((child) => sleep(5000).then(() => child));  // TODO better wait until is started
+}
+
+function stopPackager(child) {
+  console.log("Going to stop packager");
+  return new Promise(resolve => {
+    child.on('close', resolve);
+    child.kill();
+  });
 }
 
 function sleep(timeout) {
@@ -130,5 +138,6 @@ module.exports = {
   registerDemo,
   startPackager,
   killPackager,
+  stopPackager,
   listRNVersions,
 };

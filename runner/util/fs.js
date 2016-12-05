@@ -30,7 +30,11 @@ function listExistingRuns(cfg) {
 Enumerate all runs for given configuration
 */
 function enumerateRuns(cfg) {
-  return cfg.rnVersions.map(v => ({rnVersion : v, device: "ios_default"}));
+  return _.flatten(cfg.rnVersions.map(v => cfg.devices.map(device =>({rnVersion : v, device}))));
+}
+
+function isAndroidRun(run) {
+  return run.device.startsWith('android');
 }
 
 /**
@@ -82,4 +86,5 @@ module.exports = {
   getDirForRun,
   getProjectDir,
   runStr,
+  isAndroidRun,
 }
