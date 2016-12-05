@@ -17,6 +17,7 @@ const { sequence } = require('./util/promises');
 const {
   listExistingRuns,
   enumerateRuns,
+  groupRunsBy,
   getProjectDir,
   joinPath,
   runStr,
@@ -30,8 +31,7 @@ function makeAllRuns(cfg, server) {
     console.log("existing runs", existingRuns);
     runs = _.differenceBy(runs, existingRuns, runStr);
   }
-  // array of arrays where all nested arrays have same rnVersion
-  const groupedRuns = _.map(_.groupBy(runs, r => r.rnVersion));
+  const groupedRuns = groupRunsBy(runs, r => r.rnVersion);
   function makeByIdx(i) {
     if (i >= groupedRuns.length) {
       return Promise.resolve();

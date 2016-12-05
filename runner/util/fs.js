@@ -33,6 +33,14 @@ function enumerateRuns(cfg) {
   return _.flatten(cfg.rnVersions.map(v => cfg.devices.map(device =>({rnVersion : v, device}))));
 }
 
+/**
+Returns array of arrays where all runs in nested arrays share "by" condition
+@param by function run=>value which is used to make groups
+*/
+function groupRunsBy(runs, by) {
+  return _.map(_.groupBy(runs, by));
+}
+
 function isAndroidRun(run) {
   return run.device.startsWith('android');
 }
@@ -82,6 +90,7 @@ function joinPath(...segments) {
 module.exports = {
   listExistingRuns,
   enumerateRuns,
+  groupRunsBy,
   joinPath,
   getDirForRun,
   getProjectDir,

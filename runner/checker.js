@@ -1,17 +1,30 @@
 const Jimp = require("jimp");
 
-const { enumerateRuns, joinPath, getDirForRun } = require('./util/fs');
+const {
+  enumerateRuns,
+  groupRunsBy,
+  joinPath,
+  getDirForRun
+} = require('./util/fs');
+const { sequence } = require('./util/promises');
 
 function checkImages(cfg) {
-  return listImagesByVersion(cfg)
+  const allRuns = enumerateRuns(cfg);
+  const groupedRuns = groupRunsBy(allRuns, r => r.device);
+
+  return sequence(groupedRuns, runs => checkByDevice(cfg, runs));
+}
+
+function checkByDevice(cfg, runs) {
+  console.log("Checking device", runs[0].device);
+  return listImagesByVersion(cfg, runs)
     .then((files) => compareImages(cfg, files));
 }
 
 /**
 list images by RN version
 */
-function listImagesByVersion(cfg) {
-  const runs = enumerateRuns(cfg);
+function listImagesByVersion(cfg, runs) {
   const files = runs.map(run => joinPath(getDirForRun(cfg, run), 'snap-0.png'));
   // TODO check if all files exists
   if (files.length < 2) {
