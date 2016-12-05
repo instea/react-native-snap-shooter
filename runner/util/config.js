@@ -14,7 +14,7 @@ const defaultCfg = {
   receiveTimeout: 100000,
   rnVersions: ["0.34.0", "0.35.0"],
   diffRun: true, // if execute only diff runs (otherwise rewrites old execution)
-  devices: ["ios", "ios_default"], // TODO temp
+  devices: ["ios", "android"],
 }
 
 function readConfig(dir) {
