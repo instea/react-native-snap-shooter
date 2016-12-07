@@ -23,12 +23,13 @@ const {
   runStr,
   isAndroidRun,
 } = require('./util/fs');
+const log = require('./util/log');
 
 function makeAllRuns(cfg, server) {
   let runs = enumerateRuns(cfg);
   if (cfg.diffRun) {
     const existingRuns = listExistingRuns(cfg);
-    console.log("existing runs", existingRuns);
+    log.info("existing runs", existingRuns);
     runs = _.differenceBy(runs, existingRuns, runStr);
   }
   const groupedRuns = groupRunsBy(runs, r => r.rnVersion);
@@ -52,7 +53,7 @@ Make project and executes runs
 */
 function makeProjectVersion(baseCfg, runs, server) {
   const { rnVersion } = runs[0];
-  console.log("Going to make project with RN@", rnVersion);
+  log.info("Going to make project with RN@", rnVersion);
   const cfg = Object.assign({}, baseCfg, { run : { rnVersion }});
   return initProject(cfg)
     .then(() => copyDemo(cfg.demoSrc, joinPath(getProjectDir(cfg), cfg.demoDest)))
@@ -68,7 +69,7 @@ function makeProjectVersion(baseCfg, runs, server) {
 }
 
 function executeRun(baseCfg, run, server) {
-  console.log("Going to execute run", run);
+  log.info("Going to execute run", run);
   const cfg = Object.assign({}, baseCfg, { run });
   server.currentProject = cfg;
   const runner = isAndroidRun(run) ? runAndroid : runIOS;

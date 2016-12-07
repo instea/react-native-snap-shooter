@@ -1,7 +1,9 @@
-const { readJSON } = require('../util/shell');
-const { listRNVersions } = require('../util/rn');
 const semver = require('semver');
 const _ = require('lodash');
+
+const { readJSON } = require('../util/shell');
+const { listRNVersions } = require('../util/rn');
+const log = require('../util/log');
 
 const defaultCfg = {
   workDir : "work",
@@ -25,7 +27,7 @@ function readConfig(dir) {
 }
 
 function logTap(arg) {
-  console.log(arg);
+  log.trace(arg);
   return arg;
 }
 

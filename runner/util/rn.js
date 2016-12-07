@@ -1,13 +1,14 @@
 const fs = require('fs-extra');
 const { spawn, overwriteFile, exec, deleteDir } = require('./shell');
 const { getProjectDir } = require('../util/fs');
+const log = require('../util/log');
 
 /**
 Initiate new RN project
 */
 function initProject(cfg) {
   const name = cfg.project;
-  console.log("Initialization of project - it might take several minutes to finish");
+  log.warn("Initialization of project - it might take several minutes to finish");
   const projectDir = getProjectDir(cfg);
   return deleteDir(projectDir)
     .then(() => spawn(`react-native init ${name} --version ${cfg.run.rnVersion}`, {
@@ -117,7 +118,7 @@ function startPackager(cfg){
 }
 
 function stopPackager(child) {
-  console.log("Going to stop packager");
+  log.info("Going to stop packager");
   return new Promise(resolve => {
     child.on('close', resolve);
     child.kill();

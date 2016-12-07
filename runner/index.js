@@ -8,8 +8,9 @@ const { readConfig } = require('./util/config');
 const { startServer } = require('./server/server');
 const { makeAllRuns } = require('./shooter');
 const { checkImages } = require('./checker');
+const log = require('./util/log');
 
-console.log("Arguments:", argv);
+log.trace("Arguments:", argv);
 
 const demoDir = argv.src || 'demo';
 // check images for changes
@@ -32,7 +33,7 @@ readConfig(demoDir)
     .then(s => server = s)
     .then(() => makeAllRuns(demoCfg, server))
 })
-.then(res => console.log("Done", res))
-.catch(err => console.error(err))
+.then(res => log.info("Done", res))
+.catch(err => log.error(err))
 // TODO properly close server
 .then(() => process.exit())

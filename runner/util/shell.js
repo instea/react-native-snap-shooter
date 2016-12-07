@@ -1,9 +1,11 @@
 const fs = require('fs-extra');
 const { exec : node_exec , spawn : node_spawn } = require('child_process');
 
+const log = require('../util/log');
+
 function exec(cmd, options) {
   return new Promise((resolve, reject) => {
-    console.log('executing', cmd);
+    log.debug('executing', cmd);
     node_exec(cmd, options, (error, stdout, stderr) => {
       if (error) {
         return reject(error);
@@ -19,17 +21,17 @@ function spawn(cmd, options) {
     shell: true,
   }, options);
   return new Promise((resolve, reject) => {
-    console.log('spawning', cmd, options);
+    log.debug('spawning', cmd, options);
     const child = node_spawn(cmd, options);
     let output = '';
 
     child.on('error', (err) => {
-      console.log('Failed to start child process.');
+      log.error('Failed to start child process.');
       reject(err);
     });
 
     if (options.background) {
-      console.log('Starting process in background');
+      log.trace('Starting process in background');
       return resolve(child);
     }
 
@@ -38,7 +40,7 @@ function spawn(cmd, options) {
     }
 
     child.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
+      log.debug(`child process exited with code ${code}`);
       resolve({ code, output });
     });
   })
@@ -67,7 +69,7 @@ function overwriteFile(file, content) {
 }
 
 function deleteDir(dir) {
-  console.log("Deleting dir", dir);
+  log.warn("Deleting dir", dir);
   return new Promise((resolve, reject) => {
     fs.remove(dir, (err) => err ? reject(err) : resolve());
   });

@@ -7,6 +7,7 @@ const {
   getDirForRun
 } = require('./util/fs');
 const { sequence } = require('./util/promises');
+const log = require('./util/log');
 
 function checkImages(cfg) {
   const allRuns = enumerateRuns(cfg);
@@ -16,7 +17,7 @@ function checkImages(cfg) {
 }
 
 function checkByDevice(cfg, runs) {
-  console.log("Checking device", runs[0].device);
+  log.info("Checking device", runs[0].device);
   return listImagesByVersion(cfg, runs)
     .then((files) => compareImages(cfg, files));
 }
@@ -37,7 +38,7 @@ function compareImages(cfg, files) {
   let totalDistance = 0;
   function compare(img1, img2) {
     const dist = Jimp.distance(img1, img2);
-    console.log("Distance is ", dist);
+    log.debug("Distance is ", dist);
     totalDistance += dist;
     return dist;
   }
@@ -45,11 +46,11 @@ function compareImages(cfg, files) {
     if (idx >= files.length) {
       return Promise.resolve();
     }
-    console.log("Comparing with ", files[idx]);
+    log.debug("Comparing with ", files[idx]);
     return Jimp.read(files[idx]).then(img => compare(original, img))
       .then(() => compareByIdx(original, idx + 1));
   }
-  console.log("Loading first image as original", files[0]);
+  log.debug("Loading first image as original", files[0]);
   return Jimp.read(files[0])
     .then(original => compareByIdx(original, 1))
     .then(() => "total distance = " + totalDistance);
