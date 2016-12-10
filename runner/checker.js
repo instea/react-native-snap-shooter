@@ -42,12 +42,19 @@ function compareImages(cfg, files) {
     totalDistance += dist;
     return dist;
   }
+  function readAndCompare(file, originalImg) {
+    return Jimp.read(file)
+      .then(img => compare(originalImg, img))
+      .catch(err => {
+        log.error("Can't compare " + file + " : " + err);
+      });
+  }
   function compareByIdx(original, idx) {
     if (idx >= files.length) {
       return Promise.resolve();
     }
     log.debug("Comparing with ", files[idx]);
-    return Jimp.read(files[idx]).then(img => compare(original, img))
+    return readAndCompare(files[idx],original)
       .then(() => compareByIdx(original, idx + 1));
   }
   log.debug("Loading first image as original", files[0]);
