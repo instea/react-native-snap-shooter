@@ -2,5 +2,6 @@
   "dependencies": {
     "react-native-popup-menu": "^0.5.7"
   },
-  "rnVersions" : [ "0.34.0", ">0.38.0"] 
+  "verbose": true,
+  "rnVersions" : [ "0.34.0", ">0.38.0"]
 }

@@ -13,6 +13,7 @@ function initProject(cfg) {
   return deleteDir(projectDir)
     .then(() => spawn(`react-native init ${name} --version ${cfg.run.rnVersion}`, {
       cwd : cfg.workDir,
+      quite: !cfg.verbose,
     }));
 }
 
@@ -39,14 +40,17 @@ function installDependencies(cfg) {
     const version = deps[d];
     args += `${d}@${version} `;
   }
-  return spawn('npm install --save ' + args, { cwd : getProjectDir(cfg) });
+  return spawn('npm install --save ' + args, {
+    cwd : getProjectDir(cfg),
+    quite: !cfg.verbose,
+  });
 }
 
 /**
 Return (as promise) list of all RN versions
 */
 function listRNVersions() {
-  return spawn('npm view react-native versions --json', { stdio: 'pipe'}).
+  return spawn('npm view react-native versions --json', { stdio: 'pipe' }).
     then(({ output }) => JSON.parse(output));
 }
 
@@ -87,18 +91,27 @@ AppRegistry.registerComponent('${cfg.project}', () => Shotter);
 }
 
 function linkNative(cfg){
-  return spawn('react-native link', { cwd : getProjectDir(cfg) });
+  return spawn('react-native link', {
+    cwd : getProjectDir(cfg),
+    quite: !cfg.verbose,
+   });
 }
 
 function runIOS(cfg){
-  return spawn('react-native run-ios', { cwd : getProjectDir(cfg) });
+  return spawn('react-native run-ios', {
+    cwd : getProjectDir(cfg),
+    quite: !cfg.verbose,
+   });
 }
 
 function runAndroid(cfg){
   const port = cfg.serverPort;
   const adb = getAdbPath();
   return spawn(`${adb} reverse tcp:${port} tcp:${port}`, { cwd : getProjectDir(cfg) })
-    .then(() => spawn('react-native run-android', { cwd : getProjectDir(cfg) }));
+    .then(() => spawn('react-native run-android', {
+      cwd : getProjectDir(cfg),
+      quite: !cfg.verbose,
+     }));
 }
 
 function getAdbPath() {

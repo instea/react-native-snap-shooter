@@ -20,8 +20,11 @@ function spawn(cmd, options) {
     stdio: 'inherit',
     shell: true,
   }, options);
+  if (options.quite) {
+    options.stdio = ['ignore', 'ignore', process.stderr]
+  }
   return new Promise((resolve, reject) => {
-    log.debug('spawning', cmd, options);
+    log.debug('spawning', cmd);
     const child = node_spawn(cmd, options);
     let output = '';
 

@@ -17,6 +17,7 @@ const defaultCfg = {
   rnVersions: ["0.34.0", "0.35.0"],
   diffRun: true, // if execute only diff runs (otherwise rewrites old execution)
   devices: ["ios", "android"],
+  verbose: false,
 }
 
 function readConfig(dir) {
