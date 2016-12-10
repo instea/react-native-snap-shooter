@@ -7,6 +7,8 @@ That can be changes to API (which cause malfunction directly but usually is more
 
 Since it is lot of effort to test your library in all version we made this tool that do it for you by **comparing snap shots** between RN versions.
 
+Another possible use-case is to **dissect RN** to find out **where bug was introduced.**
+
 ## Getting started
 1. Setup simple testing project with `package.json` like
   ```
@@ -31,18 +33,19 @@ Since it is lot of effort to test your library in all version we made this tool 
     "dependencies": {
       "your-lib": "1.0.0"
     },
-    "rnVersions" : ["0.34.1", "0.35.0", "0.36.1"]
+    "rnVersions" : ["0.34.1", "0.35.0", ">0.38.0"]
   }
   ```
   where you define dependency for your library and RN versions you want to test.
+  Check [default values](runner/util/config.js) to see more options.
 
 3. Create simple RN component that use your library in file `demo/DemoApp.js`. This is the starting point that will be imported into testing RN project (together with other files you put into `demo` directory) and will be snap shot.
 
 Then execute `npm start` to get snap shots and `npm test` to compare them. Check [example](example/) for working demo.
 
 ## Current status
-Currently it is in an early development stage and we want to validate if community is interested in such project.
-It generally works in good case (IOS only) but still needs improvements to handle various edge cases.
+Currently we want to validate if community is interested in such project.
+It generally works in good case (both platforms - just Android needs running simulator - same as per `react-native run-android`) but still needs improvements to handle various edge cases.
 
 ## Prerequisites and limitations
 It requires all tools needed to develop and run RN applications especially following
@@ -50,22 +53,26 @@ It requires all tools needed to develop and run RN applications especially follo
 * Node.js 6
 * global `react-native-cli` at least version `0.2`
 
-Since we make "end to end" testing for multiple RN versions the process is slow ( several minutes per version).
+Since we make "end to end" testing for multiple RN versions, the process is slow ( several minutes per version).
 We use [react-native-view-shot](https://github.com/gre/react-native-view-shot) and *snapshots are not guaranteed to be pixel perfect* among other caveats.
 For image comparison we use [jimp](https://github.com/oliver-moran/jimp) that allows us to find image distance so that allows you to find how bad the changes are.
 
 ## TODO
-Plan for future roughly based on priority (any help is welcomed). The code will also need more proper error handling that hopefully will improve over time.
+Plan for future roughly based on priority (any help is welcomed).
 
 - [x] basic IOS prototype for taking snapshots/screenshots
 - [x] compare images
 - [x] wildcard RN versions
 - [x] "diff runs" ( will check only new RN versions etc)
-- [ ] Android support
+- [x] Android support
 - [ ] ability to set target simulator(s)
 - [ ] more suitable output format
 - [ ] ability to take more snapshots
 - [ ] more flexible configuration options
+- [ ] dissect RN on commit level
+
+If you are interested in a particular feature, raise a issue (or +1 existing one).
+PRs are welcomed.
 
 ## Troubleshooting
 ### Android does not receive snapshots

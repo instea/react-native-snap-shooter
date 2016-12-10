@@ -5,18 +5,34 @@ const { readJSON } = require('../util/shell');
 const { listRNVersions } = require('../util/rn');
 const log = require('../util/log');
 
+// defaults for `shooter.json`
 const defaultCfg = {
+  // directory path where shooter performs its work.
   workDir : "work",
+  // name of the RN project that will be created in work directory
   project: "sampleProject",
+  // directory within generated RN project where your demo sources will be copied
+  // source directory is always where your `shooter.json` file is located and it defaults to `demo` but can be overriden by `src` command line argument
   demoDest : "demo",
+  // file within demo sources that should be "executed". Must export valid React component as a default.
   demoApp : "DemoApp.js",
+  // timout (ms) after which the automatic snapshot will be taken
   snapTimeout: 1000,
+  // port used for receiving of snapshots from the simulator
   serverPort: 8023,
+  // directory where the results are stored. Do not have to be inside work directory.
   outputDir: "work/results",
+  // timeout (ms) for receiving of snap shots. This time includes also initial packager load thus should not be too low.
   receiveTimeout: 100000,
+  // list of RN versions that will be snapped. Can contain also any valid semver range (this range will be further restricted to versions supported by us)
+  // First RN version will be used as base against which the next versions will be compared to.
+  // Therefore it is recommended to set it to non-range version and ideally the one you are testing our component against during development
   rnVersions: ["0.34.0", "0.35.0"],
-  diffRun: true, // if execute only diff runs (otherwise rewrites old execution)
+  // if execute only diff runs i.e. don't rerun versions we already have results . Otherwise rewrites old results
+  diffRun: true,
+  // list of all devices against which the project should be run.
   devices: ["ios", "android"],
+  // if to show more verbose output
   verbose: false,
 }
 

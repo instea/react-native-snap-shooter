@@ -1,7 +1,13 @@
 #!/usr/bin/env node
 /* eslint-disable no-process-exit */
 
-const argv = require('yargs').argv;
+const argv = require('yargs')
+  .usage('$0 [options]')
+  .describe('check', 'if set the shooter will check screenshots otherwise it will capture screenshots')
+  .describe('src', 'directory where demo sources and shooter.json is stored')
+  .default('src', 'demo')
+  .help()
+  .argv;
 
 const { ensureDir } = require('./util/shell');
 const { readConfig } = require('./util/config');
@@ -12,7 +18,7 @@ const log = require('./util/log');
 
 log.trace("Arguments:", argv);
 
-const demoDir = argv.src || 'demo';
+const demoDir = argv.src;
 // check images for changes
 const shouldCheck = argv.check;
 // just print config
