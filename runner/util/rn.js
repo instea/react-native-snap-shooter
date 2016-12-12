@@ -121,7 +121,7 @@ function getAdbPath() {
 }
 
 function killPackager() {
-  return exec("lsof -n -i4TCP:8081 | grep node | sed '1 d' | awk '{print $2}' | xargs kill -9 || echo done");
+  return exec("lsof -n -i4TCP:8081 | grep node | awk '{print $2}' | xargs kill -9 || echo done");
 }
 
 /* starts packager and return (promised) child */
