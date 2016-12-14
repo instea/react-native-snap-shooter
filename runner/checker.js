@@ -46,7 +46,7 @@ function compareImages(cfg, files) {
     return Jimp.read(file)
       .then(img => compare(originalImg, img))
       .catch(err => {
-        log.error("Can't compare " + file + " : " + err);
+        log.error("Can't compare " + file + " : ", err);
       });
   }
   function compareByIdx(original, idx) {

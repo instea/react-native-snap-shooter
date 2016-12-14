@@ -1,6 +1,6 @@
 {
   "name": "react-native-snap-shooter",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Snap shooter for react native applications",
   "main": "index.js",
   "bin": {
@@ -10,6 +10,10 @@
     "start": "node index.js",
     "check": "node index.js --check",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/instea/react-native-snap-shooter.git"
   },
   "keywords": [
     "react-native",

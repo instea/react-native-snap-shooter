@@ -74,7 +74,10 @@ function executeRun(baseCfg, run, server) {
   server.currentProject = cfg;
   const runner = isAndroidRun(run) ? runAndroid : runIOS;
   return runner(cfg)
-    .then(() => receiveSnapshots(server, cfg));
+    .then(() => receiveSnapshots(server, cfg))
+    .catch(err => {
+      log.error("Can't receive snapshot for", run , err);
+    });
 }
 
 module.exports = {
