@@ -28,6 +28,9 @@ const defaultCfg = {
   // First RN version will be used as base against which the next versions will be compared to.
   // Therefore it is recommended to set it to non-range version and ideally the one you are testing our component against during development
   rnVersions: ["0.34.0", "0.35.0"],
+  // list of RN versions for exclusion. Can't be a semver range.
+  // Used only with ranges. Use it to explicitly disable (broken) version.
+  excludedVersions: [ "0.39.1" ],
   // if execute only diff runs i.e. don't rerun versions we already have results . Otherwise rewrites old results
   diffRun: true,
   // list of all devices against which the project should be run.
@@ -59,7 +62,7 @@ function expandVersions(cfg) {
   return listRNVersions()
     .then((allVersions) => {
       versions = _.flatten(versions.map(v => expandVersion(v, allVersions)));
-      cfg.rnVersions = _.uniq(versions);
+      cfg.rnVersions = _.pullAll(_.uniq(versions), cfg.excludedVersions);
       return cfg;
     })
 }
