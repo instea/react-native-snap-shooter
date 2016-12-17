@@ -33,10 +33,10 @@ Another possible use-case is to **dissect RN** to find out **where bug was intro
     "dependencies": {
       "your-lib": "1.0.0"
     },
-    "rnVersions" : ["0.34.1", "0.35.0", ">0.38.0"]
+    "rnVersions" : ["0.34.1", "0.35.0", ">0.38.0", "RC"]
   }
   ```
-  where you define dependency for your library and RN versions you want to test.
+  where you define dependency for your library and RN versions you want to test (`RC` stands for latest available rc version)
   Check [default values](runner/util/config.js) to see more options.
 
 3. Create simple RN component that use your library in file `demo/DemoApp.js`. This is the starting point that will be imported into testing RN project (together with other files you put into `demo` directory) and will be snap shot.
@@ -68,7 +68,6 @@ Plan for future roughly based on priority (any help is welcomed).
 - [ ] ability to set target simulator(s)
 - [ ] more suitable output format
 - [ ] ability to take more snapshots
-- [ ] more flexible configuration options
 - [ ] dissect RN on commit level
 
 If you are interested in a particular feature, raise a issue (or +1 existing one).

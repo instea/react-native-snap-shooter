@@ -27,6 +27,7 @@ const defaultCfg = {
   // list of RN versions that will be snapped. Can contain also any valid semver range (this range will be further restricted to versions supported by us)
   // First RN version will be used as base against which the next versions will be compared to.
   // Therefore it is recommended to set it to non-range version and ideally the one you are testing our component against during development
+  // Special value `RC` stands for latest rc version
   rnVersions: ["0.34.0", "0.35.0"],
   // list of RN versions for exclusion. Can't be a semver range.
   // Used only with ranges. Use it to explicitly disable (broken) version.
@@ -56,7 +57,7 @@ function expandVersions(cfg) {
   if (!versions) {
     throw new Error("no RN versions defined in config");
   }
-  if (!versions.some(v => semver.validRange(v))) {
+  if (!versions.some(v => semver.validRange(v) || isOurSpecial(v))) {
     return cfg;
   }
   return listRNVersions()
@@ -74,7 +75,31 @@ function expandVersion(ver, all) {
   if (semver.validRange(ver)) {
     return all.filter(v => semver.satisfies(v, ver) && semver.gte(v, '0.30.0'));
   }
+  if (isOurSpecial(ver)) {
+    return retrieveSpecial(ver, all);
+  }
   throw new Error('invalid version ' + ver);
+}
+
+// our special version type
+function isOurSpecial(ver) {
+  if (ver === "RC") {
+    return true;
+  }
+  return false;
+}
+
+function retrieveSpecial(ver, all) {
+  if (ver === "RC") {
+    // return latest RC if any
+    const last = all[all.length - 1];
+    if (last.indexOf("rc") > 0) {
+      return last;
+    }
+    // latest RC is from prior version -> not interested
+    return [];
+  }
+  throw new Error('Invalid special version ' + ver);
 }
 
 module.exports = {
