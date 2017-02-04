@@ -1,4 +1,6 @@
 const fs = require('fs-extra');
+const semver = require('semver');
+
 const { spawn, overwriteFile, exec, deleteDir } = require('./shell');
 const { getProjectDir } = require('../util/fs');
 const log = require('../util/log');
@@ -34,7 +36,7 @@ function installDependencies(cfg) {
   // add our dependencies
   deps['react-native-snap-shooter-tools'] = '^0.1.1';
   // deps['react-native-snap-shooter-tools'] = '../../../tools';
-  deps['react-native-view-shot'] = '^1.5.0';
+  deps['react-native-view-shot'] = getViewShotVersion(cfg);
   let args = '';
   for(let d in deps) {
     const version = deps[d];
@@ -44,6 +46,13 @@ function installDependencies(cfg) {
     cwd : getProjectDir(cfg),
     quite: !cfg.verbose,
   });
+}
+
+/**
+Gets compatible version for current RN
+*/
+function getViewShotVersion(cfg) {
+  return semver.lt(cfg.run.rnVersion, '0.40.0') ? '~1.5.0' : '^1.6.0';
 }
 
 /**

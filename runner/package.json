@@ -1,6 +1,6 @@
 {
   "name": "react-native-snap-shooter",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Snap shooter for react native applications",
   "main": "index.js",
   "bin": {
