@@ -22,6 +22,7 @@ function listExistingRuns(cfg) {
   const projectPathLength = splitPath(outDir).length;
   const runs = files.map(f => splitPath(f))
     .map(segments => segments.slice(projectPathLength))
+    .filter(seg => seg[2] === 'done.txt')
     .map(seg => ({ device: seg[0], rnVersion: seg[1]}));
   return _.uniqBy(runs, runStr);
 }

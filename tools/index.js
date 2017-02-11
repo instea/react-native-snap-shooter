@@ -24,9 +24,13 @@ function snapshot(view, name) {
     });
 }
 
+function done() {
+  console.log("sending done signal")
+  return postForm('/done')
+}
+
 function sendFile(name, uri) {
   console.log("sending file", name, uri);
-  const serverURL = `http://localhost:${options.serverPort}/snap`;
   const photo = {
     uri,
     type: 'image/png',
@@ -34,6 +38,12 @@ function sendFile(name, uri) {
   };
   const body = new FormData();
   body.append('photo', photo);
+
+  return postForm('/snap', body);
+}
+
+function postForm(uriPath, body) {
+  const serverURL = `http://localhost:${options.serverPort}${uriPath}`;
 
   const xhr = new XMLHttpRequest();
   xhr.open('POST', serverURL);
@@ -58,6 +68,7 @@ function init(opts) {
 }
 
 module.exports = {
-  snapshot,
   init,
+  snapshot,
+  done,
 }

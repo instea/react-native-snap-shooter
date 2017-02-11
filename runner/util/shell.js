@@ -57,6 +57,15 @@ function ensureDir(dir) {
   });
 }
 
+/** touches file and creates directories if needed */
+function touchFile(file) {
+  return new Promise((resolve, reject) => {
+    fs.ensureFile(file, function(err) {
+        return err ? reject(err) : resolve();
+      });
+  });
+}
+
 function readJSON(file) {
   return new Promise((resolve, reject) => {
     fs.readJSON(file,
@@ -98,4 +107,5 @@ module.exports = {
   overwriteFile,
   pipe,
   deleteDir,
+  touchFile,
 };

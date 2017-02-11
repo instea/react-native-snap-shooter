@@ -34,7 +34,7 @@ Install dependencies for demo project
 function installDependencies(cfg) {
   const deps = cfg.dependencies;
   // add our dependencies
-  deps['react-native-snap-shooter-tools'] = '^0.1.1';
+  deps['react-native-snap-shooter-tools'] = '^0.2.0';
   // deps['react-native-snap-shooter-tools'] = '../../../tools';
   deps['react-native-view-shot'] = getViewShotVersion(cfg);
   let args = '';
@@ -88,7 +88,7 @@ class Shotter extends Component {
   }
 
   snap() {
-    tools.snapshot(this.refs.root).catch(err => console.warn(err));
+    tools.snapshot(this.refs.root).then(tools.done).catch(err => console.warn(err));
   }
 }
 

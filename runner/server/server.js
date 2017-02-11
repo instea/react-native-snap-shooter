@@ -3,7 +3,7 @@ const http = require('http');
 const formidable = require('formidable');
 const fs = require('fs-extra');
 
-const { ensureDir } = require('../util/shell');
+const { ensureDir, touchFile } = require('../util/shell');
 const { getDirForRun, joinPath } = require('../util/fs');
 const log = require('../util/log');
 
@@ -13,7 +13,11 @@ function startServer(cfg) {
     var server = http.createServer(handleRequest);
 
     function handleRequest(request, response){
-      log.debug("incomming request");
+      const url = request.url;
+      log.debug("incomming request", url);
+      if (url === '/done') {
+        return handleDone(request, response, server);
+      }
       handleSnapshot(request, response, server);
     }
 
@@ -28,8 +32,10 @@ function startServer(cfg) {
 
 function receiveSnapshots(server, cfg) {
   log.info("receiveSnapshots...");
+  const snapshots = [];
   return timeoutPromise(new Promise((resolve) => {
-    server.on('snapfile', snap => resolve(snap));
+    server.on('snapfile', snap => snapshots.push(snap));
+    server.on('done', () => resolve(snapshots))
   }), cfg.receiveTimeout);
 }
 
@@ -58,6 +64,17 @@ function handleSnapshot(request, response, server) {
         server.emit('snapfile', { fileName });
         response.end('It Works!! Path Hit: ' + request.url);
       });
+    });
+}
+
+function handleDone(request, response, server) {
+  const cfg = server.currentProject;
+  const dir = getDirForRun(cfg, cfg.run);
+  const fileName = joinPath(dir, 'done.txt');
+  return touchFile(fileName)
+    .then(() => {
+      server.emit('done');
+      response.end('End of session');
     });
 }
 
