@@ -9,9 +9,11 @@ let idx = 0;
 
 /**
 Takes snapshot and optionally send it to server
+@param view - reference to the view that should be snap shooted
+@param name - optional name of the snapshot (like `snap0` or `firstScreen`)
 */
 function snapshot(view, name) {
-  name = name || generateName();
+  name = (name || generateName()) + '.png';
   console.log("taking snapshot", name);
   return takeSnapshot(view, {})
     .then(uri => {
@@ -24,6 +26,9 @@ function snapshot(view, name) {
     });
 }
 
+/**
+Called when you are done with taking snapshots
+*/
 function done() {
   console.log("sending done signal")
   return postForm('/done')
@@ -56,7 +61,7 @@ function postForm(uriPath, body) {
 }
 
 function generateName() {
-  return 'snap-'+(idx++)+'.png';
+  return 'snap-'+(idx++);
 }
 
 /**
