@@ -73,6 +73,13 @@ Plan for future roughly based on priority (any help is welcomed).
 If you are interested in a particular feature, raise a issue (or +1 existing one).
 PRs are welcomed.
 
+## Advanced topics
+### Taking multiple snapshots
+It is problematic to know when framework should take multiple snapshots. Therefore to take multiple snapshots you need to take directly in your demo application and disable in `shooter.json` automatic snapshots.
+It is possible that you will need to use timeouts or other mechanism to have repeatable results (e.g. if your library do animations)
+
+Check [example-manual](example-manual/).
+
 ## Troubleshooting
 ### Android does not receive snapshots
 When you see `adb server version (%d) doesn't match this client (%d)` in console output it means that you have to make sure that your simulator is using same version as `react-native` (most likely `$ANDROID_HOME/platform-tools/adb`)

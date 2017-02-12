@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "react-native-popup-menu": "^0.5.7"
+  },
+  "verbose": false,
+  "devices": ["ios"],
+  "automatic": false,
+  "rnVersions" : [ "0.34.0", "0.41.0"]
+}
