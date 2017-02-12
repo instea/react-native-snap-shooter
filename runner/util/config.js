@@ -38,6 +38,8 @@ const defaultCfg = {
   devices: ["ios", "android"],
   // if to show more verbose output
   verbose: false,
+  // iff the generated demo app will take snapshots automatically. Otherwise code in `demoApp` is responsible for taking snapshots and `done` action
+  automatic: true,
 }
 
 function readConfig(dir) {

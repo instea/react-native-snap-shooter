@@ -34,7 +34,7 @@ Install dependencies for demo project
 function installDependencies(cfg) {
   const deps = cfg.dependencies;
   // add our dependencies
-  deps['react-native-snap-shooter-tools'] = '^0.2.0';
+  deps['react-native-snap-shooter-tools'] = '^0.3.0';
   // deps['react-native-snap-shooter-tools'] = '../../../tools';
   deps['react-native-view-shot'] = getViewShotVersion(cfg);
   let args = '';
@@ -67,6 +67,15 @@ function listRNVersions() {
 Register `demoApp` to generated project
 */
 function registerDemo(cfg) {
+  const autoCode = cfg.automatic ? `
+    componentDidMount() {
+      setTimeout(() => this.snap(), ${cfg.snapTimeout});
+    }
+
+    snap() {
+      tools.snapshot(this.refs.root).then(tools.done).catch(err => console.warn(err));
+    }
+  ` : '';
   const demoJs = `
 import React, { Component } from 'react';
 import { AppRegistry, View } from 'react-native';
@@ -82,14 +91,7 @@ class Shotter extends Component {
       </View>
     )
   }
-
-  componentDidMount() {
-    setTimeout(() => this.snap(), ${cfg.snapTimeout});
-  }
-
-  snap() {
-    tools.snapshot(this.refs.root).then(tools.done).catch(err => console.warn(err));
-  }
+  ${autoCode}
 }
 
 tools.init({ serverPort : ${cfg.serverPort}});

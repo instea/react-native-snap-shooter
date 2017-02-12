@@ -9,7 +9,10 @@ Currently run is determined by following attributes:
 Each attribute defines one directory (in given order)
 */
 const fs = require('fs-extra');
+const path = require('path');
 const _ = require('lodash');
+
+const DONE_FILE = 'done.txt';
 
 /**
 List all existing runs for given project.
@@ -22,9 +25,21 @@ function listExistingRuns(cfg) {
   const projectPathLength = splitPath(outDir).length;
   const runs = files.map(f => splitPath(f))
     .map(segments => segments.slice(projectPathLength))
-    .filter(seg => seg[2] === 'done.txt')
+    .filter(seg => seg[2] === DONE_FILE)
     .map(seg => ({ device: seg[0], rnVersion: seg[1]}));
   return _.uniqBy(runs, runStr);
+}
+
+/**
+List all images from run directory if it is done
+*/
+function listImages(dir) {
+  const done = fs.existsSync(joinPath(dir, DONE_FILE));
+  if (!done) {
+    throw new Error('Image directory is not done yet: ' + dir)
+  }
+  var files = fs.walkSync(dir);
+  return files.filter(fn => fn.endsWith('.png')).map(fn => path.basename(fn));
 }
 
 /**
@@ -90,6 +105,7 @@ function joinPath(...segments) {
 
 module.exports = {
   listExistingRuns,
+  listImages,
   enumerateRuns,
   groupRunsBy,
   joinPath,

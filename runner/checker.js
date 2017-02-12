@@ -4,7 +4,8 @@ const {
   enumerateRuns,
   groupRunsBy,
   joinPath,
-  getDirForRun
+  getDirForRun,
+  listImages,
 } = require('./util/fs');
 const { sequence } = require('./util/promises');
 const log = require('./util/log');
@@ -18,18 +19,22 @@ function checkImages(cfg) {
 
 function checkByDevice(cfg, runs) {
   log.info("Checking device", runs[0].device);
-  return listImagesByVersion(cfg, runs)
-    .then((files) => compareImages(cfg, files));
+  const baseDir = getDirForRun(cfg, runs[0]);
+  const originals = listImages(baseDir);
+  return sequence(originals, imageName => {
+    return listImagesByVersion(cfg, runs, imageName)
+      .then((files) => compareImages(cfg, files));
+  })
 }
 
 /**
 list images by RN version
 */
-function listImagesByVersion(cfg, runs) {
-  const files = runs.map(run => joinPath(getDirForRun(cfg, run), 'snap-0.png'));
+function listImagesByVersion(cfg, runs, imageName) {
+  const files = runs.map(run => joinPath(getDirForRun(cfg, run), imageName));
   // TODO check if all files exists
   if (files.length < 2) {
-    throw new Error('need at least two images to check');
+    throw new Error('need at least two images to check for ' + imageName);
   }
   return Promise.resolve(files);
 }
@@ -60,7 +65,7 @@ function compareImages(cfg, files) {
   log.debug("Loading first image as original", files[0]);
   return Jimp.read(files[0])
     .then(original => compareByIdx(original, 1))
-    .then(() => "total distance = " + totalDistance);
+    .then(() => log.info("total distance = " + totalDistance));
 }
 
 module.exports = {

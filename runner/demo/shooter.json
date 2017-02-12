@@ -3,5 +3,7 @@
     "react-native-popup-menu": "^0.5.7"
   },
   "verbose": false,
-  "rnVersions" : [ "0.34.0", ">0.38.0"]
+  "devices": ["ios"],
+  "automatic": false,
+  "rnVersions" : [ "0.34.0", "0.41.0"]
 }

@@ -65,9 +65,9 @@ Plan for future roughly based on priority (any help is welcomed).
 - [x] wildcard RN versions
 - [x] "diff runs" ( will check only new RN versions etc)
 - [x] Android support
+- [x] ability to take more snapshots
 - [ ] ability to set target simulator(s)
 - [ ] more suitable output format
-- [ ] ability to take more snapshots
 - [ ] dissect RN on commit level
 
 If you are interested in a particular feature, raise a issue (or +1 existing one).

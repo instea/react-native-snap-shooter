@@ -6,6 +6,7 @@ import Menu, {
   MenuOption,
   MenuTrigger
 } from 'react-native-popup-menu';
+import tools from 'react-native-snap-shooter-tools';
 
 export default class ControlledExample extends Component {
 
@@ -14,22 +15,10 @@ export default class ControlledExample extends Component {
     this.state = { opened: true };
   }
 
-  onOptionSelect(value) {
-    alert(`Selected number: ${value}`);
-    this.setState({ opened: false });
-  }
-
-  onTriggerPress() {
-    this.setState({ opened: true });
-  }
-
-  onBackdropPress() {
-    this.setState({ opened: false });
-  }
-
   render() {
     return (
       <MenuContext
+        ref="root"
         style={{flexDirection: 'column', padding: 30}}>
         <Text>Hello world!</Text>
         <Menu
@@ -51,4 +40,18 @@ export default class ControlledExample extends Component {
     );
   }
 
+  componentDidMount() {
+    setTimeout(() => this.snap(), 1000);
+  }
+
+  snap() {
+    tools.snapshot(this.refs.root, 'opened').then(() => {
+      this.setState({ opened: false });
+      setTimeout(() => this.snapClosed(), 1000);
+    }).catch(err => console.warn(err));
+  }
+
+  snapClosed() {
+    tools.snapshot(this.refs.root, 'closed').then(tools.done).catch(err => console.warn(err));
+  }
 }
